@@ -7,6 +7,9 @@
 //! - **IDs**: NodeID, WayID, RelationID, FeatureID, ElementID, ObjectID
 //! - **XML Parsing**: Scanner for reading OSM XML files
 //! - **GeoJSON Conversion**: Convert OSM data to GeoJSON
+//! - **API Client**: Access OSM REST API (nodes, ways, relations, changesets, notes, users)
+//! - **Replication**: Access planet replication feeds (minute, hour, day, changeset)
+//! - **Annotate**: Compute diffs and annotate elements with history data
 //!
 //! # Example
 //!
@@ -27,11 +30,14 @@
 //! assert_eq!(node.tags.find("name"), "London");
 //! ```
 
+pub mod annotate;
+pub mod api;
 pub mod container;
 pub mod datasource;
 pub mod geojson;
 pub mod mputil;
 pub mod polygon;
+pub mod replication;
 pub mod types;
 pub mod xml;
 

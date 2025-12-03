@@ -15,6 +15,9 @@ This is a Rust port of the Go library [paulmach/osm](https://github.com/paulmach
 - **XML parsing** - Scanner for reading OSM XML files
 - **GeoJSON conversion** - Convert OSM data to GeoJSON format
 - **Multi-polygon utilities** - Tools for building complex polygons
+- **API client** - Access the OSM REST API (nodes, ways, relations, changesets, notes, users)
+- **Replication** - Access planet replication feeds (minute, hour, day, changeset)
+- **Annotate** - Compute diffs and annotate elements with history data
 
 ## Installation
 
@@ -76,6 +79,56 @@ let options = ConvertOptions::new()
 let fc = convert(&osm, &options);
 
 // fc is a geojson::FeatureCollection
+```
+
+## Using the OSM API Client
+
+```rust
+use osm::api::{Datasource, FeatureOptions};
+use osm::NodeID;
+
+// Create a datasource (async)
+async fn example() {
+    let ds = Datasource::new();
+    
+    // Get a specific node
+    let node = ds.node(NodeID(123), None).await.unwrap();
+    println!("Node: {:?}", node);
+    
+    // Get a node at a specific time (osm.fyi extension)
+    let opts = FeatureOptions::new().at(chrono::Utc::now());
+    let node = ds.node(NodeID(123), Some(opts)).await.unwrap();
+}
+```
+
+## Using Replication Data
+
+```rust
+use osm::replication::{Datasource, MinuteSeqNum};
+
+async fn example() {
+    let ds = Datasource::new();
+    
+    // Get current minute state
+    let (seq, state) = ds.current_minute_state().await.unwrap();
+    println!("Current minute: {} at {:?}", seq, state.timestamp);
+    
+    // Get a specific minute diff
+    let change = ds.minute(MinuteSeqNum(2010580)).await.unwrap();
+}
+```
+
+## Annotating Changes
+
+```rust
+use osm::annotate::{change_to_diff, Options, HistoryDatasourcer};
+use osm::Change;
+
+// Implement HistoryDatasourcer trait for your datasource
+// Then convert changes to diffs with historical context
+
+let opts = Options::new().ignore_missing_children(true);
+// let diff = change_to_diff(&change, &datasource, &opts);
 ```
 
 ## Working with Ways
@@ -159,6 +212,9 @@ let objects = osm.objects();
 | `mputil` | Multi-polygon utilities |
 | `polygon` | Polygon detection for ways/relations |
 | `datasource` | History datasource |
+| `api` | OSM REST API client (async) |
+| `replication` | Planet replication feed access (async) |
+| `annotate` | Change/diff annotation with historical data |
 
 ## License
 
