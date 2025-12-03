@@ -1,0 +1,30 @@
+[package]
+name = "osm"
+version = "0.1.0"
+edition = "2021"
+description = "A general purpose library for reading, writing and working with OpenStreetMap data"
+license = "MIT"
+repository = "https://github.com/paulmach/osm"
+keywords = ["osm", "openstreetmap", "geo", "map"]
+categories = ["science::geo", "encoding", "parser-implementations"]
+
+[dependencies]
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+quick-xml = { version = "0.37", features = ["serialize"] }
+chrono = { version = "0.4", features = ["serde"] }
+thiserror = "2.0"
+geo-types = "0.7"
+flate2 = "1.0"
+prost = "0.13"
+once_cell = "1.20"
+
+[dev-dependencies]
+pretty_assertions = "1.4"
+
+[features]
+default = []
+pbf = []
+
+[build-dependencies]
+prost-build = "0.13"
