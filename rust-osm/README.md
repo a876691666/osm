@@ -13,6 +13,7 @@ This is a Rust port of the Go library [paulmach/osm](https://github.com/paulmach
 - **History datasource** for tracking element versions
 - **JSON serialization/deserialization** (Overpass API compatible)
 - **XML parsing** - Scanner for reading OSM XML files
+- **PBF parsing** - Parser for OSM PBF binary format
 - **GeoJSON conversion** - Convert OSM data to GeoJSON format
 - **Multi-polygon utilities** - Tools for building complex polygons
 - **API client** - Access the OSM REST API (nodes, ways, relations, changesets, notes, users)
@@ -45,6 +46,40 @@ let node = Node {
 };
 
 assert_eq!(node.tags.find("name"), "London");
+```
+
+## Reading OSM PBF Files
+
+```rust
+use osm::pbf::Scanner;
+use std::io::BufReader;
+use std::fs::File;
+
+let file = File::open("data.osm.pbf").unwrap();
+let reader = BufReader::new(file);
+let mut scanner = Scanner::new(reader, 4); // 4 parallel decoders
+
+// Read the file header
+let header = scanner.header().unwrap();
+if let Some(ref bounds) = header.bounds {
+    println!("Bounds: {} {} {} {}", bounds.min_lat, bounds.min_lon, bounds.max_lat, bounds.max_lon);
+}
+
+// Process all objects
+while scanner.scan() {
+    if let Some(obj) = scanner.object() {
+        match obj {
+            osm::pbf::OsmObject::Node(n) => println!("Node: {}", n.id.0),
+            osm::pbf::OsmObject::Way(w) => println!("Way: {}", w.id.0),
+            osm::pbf::OsmObject::Relation(r) => println!("Relation: {}", r.id.0),
+        }
+    }
+}
+
+// Check for errors
+if let Some(err) = scanner.err() {
+    eprintln!("Error: {:?}", err);
+}
 ```
 
 ## Reading OSM XML Files
@@ -208,6 +243,7 @@ let objects = osm.objects();
 | Module | Description |
 |--------|-------------|
 | `xml` | XML scanner for parsing OSM files |
+| `pbf` | PBF binary format parser |
 | `geojson` | GeoJSON conversion utilities |
 | `mputil` | Multi-polygon utilities |
 | `polygon` | Polygon detection for ways/relations |

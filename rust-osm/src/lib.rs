@@ -6,6 +6,7 @@
 //! - **Container Types**: OSM (container returned via API), Change (replication API), Diff (augmented diffs)
 //! - **IDs**: NodeID, WayID, RelationID, FeatureID, ElementID, ObjectID
 //! - **XML Parsing**: Scanner for reading OSM XML files
+//! - **PBF Parsing**: Parser for OSM PBF binary format
 //! - **GeoJSON Conversion**: Convert OSM data to GeoJSON
 //! - **API Client**: Access OSM REST API (nodes, ways, relations, changesets, notes, users)
 //! - **Replication**: Access planet replication feeds (minute, hour, day, changeset)
@@ -36,6 +37,7 @@ pub mod container;
 pub mod datasource;
 pub mod geojson;
 pub mod mputil;
+pub mod pbf;
 pub mod polygon;
 pub mod replication;
 pub mod types;
