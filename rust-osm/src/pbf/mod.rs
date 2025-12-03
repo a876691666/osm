@@ -12,7 +12,8 @@
 //! ```rust,ignore
 //! use std::fs::File;
 //! use std::io::BufReader;
-//! use osm::pbf::Scanner;
+//! // Import Scanner from the crate's pbf module
+//! use osm::pbf::Scanner; // or use crate::pbf::Scanner within this crate
 //!
 //! let file = File::open("planet.osm.pbf")?;
 //! let reader = BufReader::new(file);
