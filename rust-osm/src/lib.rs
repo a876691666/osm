@@ -5,6 +5,8 @@
 //! - **Core Types**: Node, Way, Relation, Changeset, Note, User
 //! - **Container Types**: OSM (container returned via API), Change (replication API), Diff (augmented diffs)
 //! - **IDs**: NodeID, WayID, RelationID, FeatureID, ElementID, ObjectID
+//! - **XML Parsing**: Scanner for reading OSM XML files
+//! - **GeoJSON Conversion**: Convert OSM data to GeoJSON
 //!
 //! # Example
 //!
@@ -27,8 +29,11 @@
 
 pub mod container;
 pub mod datasource;
+pub mod geojson;
+pub mod mputil;
 pub mod polygon;
 pub mod types;
+pub mod xml;
 
 // Re-export all types at the crate root for convenience
 pub use container::*;

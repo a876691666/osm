@@ -6,12 +6,15 @@ This is a Rust port of the Go library [paulmach/osm](https://github.com/paulmach
 
 ## Features
 
-- Core OSM types: Node, Way, Relation, Changeset, Note, User
-- Container types: OSM, Change, Diff
-- ID types: NodeID, WayID, RelationID, FeatureID, ElementID, ObjectID
-- Polygon detection for ways and relations
-- History datasource for tracking element versions
-- JSON serialization/deserialization (Overpass API compatible)
+- **Core OSM types**: Node, Way, Relation, Changeset, Note, User
+- **Container types**: OSM, Change, Diff
+- **ID types**: NodeID, WayID, RelationID, FeatureID, ElementID, ObjectID
+- **Polygon detection** for ways and relations
+- **History datasource** for tracking element versions
+- **JSON serialization/deserialization** (Overpass API compatible)
+- **XML parsing** - Scanner for reading OSM XML files
+- **GeoJSON conversion** - Convert OSM data to GeoJSON format
+- **Multi-polygon utilities** - Tools for building complex polygons
 
 ## Installation
 
@@ -39,6 +42,40 @@ let node = Node {
 };
 
 assert_eq!(node.tags.find("name"), "London");
+```
+
+## Reading OSM XML Files
+
+```rust
+use osm::xml::Scanner;
+use std::io::BufReader;
+use std::fs::File;
+
+let file = File::open("data.osm").unwrap();
+let reader = BufReader::new(file);
+let mut scanner = Scanner::new(reader);
+
+while scanner.scan() {
+    if let Some(obj) = scanner.object() {
+        // Process the object
+        println!("{:?}", obj);
+    }
+}
+```
+
+## Converting to GeoJSON
+
+```rust
+use osm::{OSM, geojson::{convert, ConvertOptions}};
+
+let osm = OSM::new();
+// ... add nodes, ways, relations ...
+
+let options = ConvertOptions::new()
+    .with_no_meta(true);
+let fc = convert(&osm, &options);
+
+// fc is a geojson::FeatureCollection
 ```
 
 ## Working with Ways
@@ -112,6 +149,16 @@ let objects = osm.objects();
 | `OSM` | Container for OSM data (nodes, ways, relations, etc.) |
 | `Change` | Structure for changeset data (create, modify, delete) |
 | `Diff` | Augmented diff with old/new data |
+
+### Modules
+
+| Module | Description |
+|--------|-------------|
+| `xml` | XML scanner for parsing OSM files |
+| `geojson` | GeoJSON conversion utilities |
+| `mputil` | Multi-polygon utilities |
+| `polygon` | Polygon detection for ways/relations |
+| `datasource` | History datasource |
 
 ## License
 
