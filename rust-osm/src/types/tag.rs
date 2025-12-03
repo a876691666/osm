@@ -65,22 +65,12 @@ impl Tags {
     /// Can be used to determine if a key exists, even with an empty value.
     /// Returns None if not found.
     pub fn find_tag(&self, key: &str) -> Option<&Tag> {
-        for tag in &self.0 {
-            if tag.key == key {
-                return Some(tag);
-            }
-        }
-        None
+        self.0.iter().find(|tag| tag.key == key)
     }
 
     /// HasTag will return true if a tag exists for the given key.
     pub fn has_tag(&self, key: &str) -> bool {
-        for tag in &self.0 {
-            if tag.key == key {
-                return true;
-            }
-        }
-        false
+        self.0.iter().any(|tag| tag.key == key)
     }
 
     /// Map returns the tags as a key/value HashMap.

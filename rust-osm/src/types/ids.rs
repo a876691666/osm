@@ -121,7 +121,7 @@ impl NodeID {
 
     /// Returns the feature id for this node id
     pub fn feature_id(self) -> FeatureID {
-        FeatureID(NODE_MASK | (((self.0 << VERSION_BITS) as i64) & REF_VERSION_MASK))
+        FeatureID(NODE_MASK | ((self.0 << VERSION_BITS) & REF_VERSION_MASK))
     }
 
     /// Returns the element id for this node id with the given version
@@ -151,7 +151,7 @@ impl WayID {
 
     /// Returns the feature id for this way id
     pub fn feature_id(self) -> FeatureID {
-        FeatureID(WAY_MASK | ((self.0 << VERSION_BITS) as i64))
+        FeatureID(WAY_MASK | (self.0 << VERSION_BITS))
     }
 
     /// Returns the element id for this way id with the given version
@@ -181,7 +181,7 @@ impl RelationID {
 
     /// Returns the feature id for this relation id
     pub fn feature_id(self) -> FeatureID {
-        FeatureID(RELATION_MASK | (((self.0 << VERSION_BITS) as i64) & REF_VERSION_MASK))
+        FeatureID(RELATION_MASK | ((self.0 << VERSION_BITS) & REF_VERSION_MASK))
     }
 
     /// Returns the element id for this relation id with the given version
@@ -206,7 +206,7 @@ pub struct ChangesetID(pub i64);
 impl ChangesetID {
     /// Returns the object id for this changeset id
     pub fn object_id(self) -> ObjectID {
-        ObjectID(CHANGESET_MASK | (((self.0 << VERSION_BITS) as i64) & REF_VERSION_MASK))
+        ObjectID(CHANGESET_MASK | ((self.0 << VERSION_BITS) & REF_VERSION_MASK))
     }
 }
 
@@ -226,7 +226,7 @@ pub struct NoteID(pub i64);
 impl NoteID {
     /// Returns the object id for this note id
     pub fn object_id(self) -> ObjectID {
-        ObjectID(NOTE_MASK | (((self.0 << VERSION_BITS) as i64) & REF_VERSION_MASK))
+        ObjectID(NOTE_MASK | ((self.0 << VERSION_BITS) & REF_VERSION_MASK))
     }
 }
 
@@ -246,7 +246,7 @@ pub struct UserID(pub i64);
 impl UserID {
     /// Returns the object id for this user id
     pub fn object_id(self) -> ObjectID {
-        ObjectID(USER_MASK | (((self.0 << VERSION_BITS) as i64) & REF_VERSION_MASK))
+        ObjectID(USER_MASK | ((self.0 << VERSION_BITS) & REF_VERSION_MASK))
     }
 }
 

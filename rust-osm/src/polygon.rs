@@ -33,7 +33,7 @@ pub fn way_is_polygon(way: &Way) -> bool {
     }
 
     for c in POLY_CONDITIONS.iter() {
-        let v = way.tags.find(&c.key);
+        let v = way.tags.find(c.key);
         if v.is_empty() || v == "no" {
             continue;
         }

@@ -52,18 +52,13 @@ impl Default for Action {
 }
 
 /// ActionType is a strong type for the different diff actions
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Default, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
 pub enum ActionType {
+    #[default]
     Create,
     Modify,
     Delete,
-}
-
-impl Default for ActionType {
-    fn default() -> Self {
-        ActionType::Create
-    }
 }
 
 impl ActionType {
